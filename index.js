@@ -1,16 +1,16 @@
 const pubmedService = require('./src/services/pubmedService');
 const csvService = require('./src/services/csvService');
-const { PUBLICATION_YEARS } = require('./src/config');
+const { PUBLICATION_YEARS, SEARCH_TERMS } = require('./src/config');
 
-async function searchPubMed(searchTerm) {
+async function searchPubMed() {
     try {
-        console.log('\n🔍 Starting PubMed search for:', searchTerm);
-        console.log(`📅 Filtering for Clinical Trials and Meta-Analyses from ${PUBLICATION_YEARS.START}-${PUBLICATION_YEARS.END}\n`);
+        console.log('\n🔍 Starting PubMed search for:', SEARCH_TERMS.QUERY);
+        console.log(`📅 Filtering for ${SEARCH_TERMS.PUBLICATION_TYPES.join(' and ')} from ${PUBLICATION_YEARS.START}-${PUBLICATION_YEARS.END}\n`);
 
         const startTime = Date.now();
 
         // Search for articles
-        const ids = await pubmedService.searchArticles(searchTerm);
+        const ids = await pubmedService.searchArticles();
         console.log(`\n📊 Found ${ids.length} matching articles`);
 
         // Fetch article details
@@ -26,7 +26,7 @@ async function searchPubMed(searchTerm) {
         
         console.log('\n💾 Creating CSV file...');
         const csvContent = csvService.createCSVContent(authorMap);
-        const outputFile = csvService.writeToFile(csvContent, searchTerm);
+        const outputFile = csvService.writeToFile(csvContent, SEARCH_TERMS.QUERY);
         
         const totalTime = ((Date.now() - startTime) / 1000).toFixed(2);
         console.log('\n✅ Process completed successfully!');
@@ -49,10 +49,8 @@ async function searchPubMed(searchTerm) {
     }
 }
 
-// Example usage
-const searchTerm = "neuroendocrine tumor";
 console.log('🚀 PubMed Author Extraction Tool');
 console.log('================================\n');
-searchPubMed(searchTerm)
+searchPubMed()
     .then(() => console.log('👋 Search completed. Have a great day!\n'))
     .catch(err => console.error('❌ Failed to complete search:', err));

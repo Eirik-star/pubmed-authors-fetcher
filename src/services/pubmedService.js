@@ -1,6 +1,15 @@
 const xml2js = require('xml2js');
 const util = require('util');
-const { BASE_URL, API_KEY, BATCH_SIZE, DELAY_MS, PUBLICATION_YEARS, MAX_RESULTS, DEFAULT_RETMAX } = require('../config');
+const { 
+    BASE_URL, 
+    API_KEY, 
+    BATCH_SIZE, 
+    DELAY_MS, 
+    PUBLICATION_YEARS, 
+    MAX_RESULTS, 
+    DEFAULT_RETMAX,
+    SEARCH_TERMS 
+} = require('../config');
 const { delay, fetchWithRetry } = require('../utils/apiUtils');
 
 class PubMedService {
@@ -9,14 +18,16 @@ class PubMedService {
         this.parseXml = util.promisify(this.parser.parseString);
     }
 
-    buildSearchFilters(searchTerm) {
+    buildSearchFilters() {
+        const publicationTypes = SEARCH_TERMS.PUBLICATION_TYPES
+            .map(type => `"${type}"[Publication Type]`)
+            .join(' OR ');
+
         return [
-            `(${searchTerm})`,
+            `(${SEARCH_TERMS.QUERY})`,
             'AND',
             '(',
-            '"Clinical Trial"[Publication Type]',
-            'OR',
-            '"Meta-Analysis"[Publication Type]',
+            publicationTypes,
             ')',
             'AND',
             '(',
@@ -27,8 +38,8 @@ class PubMedService {
         ].join(' ');
     }
 
-    async searchArticles(searchTerm) {
-        const filters = this.buildSearchFilters(searchTerm);
+    async searchArticles() {
+        const filters = this.buildSearchFilters();
         let allIds = [];
         let retStart = 0;
         
