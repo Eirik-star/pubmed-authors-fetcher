@@ -1,1 +1,15 @@
-node_modules
+# Environment variables
+.env
+
+# Dependencies
+node_modules/
+
+# Generated files
+*.csv
+
+# Logs
+*.log
+
+# IDE files
+.vscode/
+.idea/

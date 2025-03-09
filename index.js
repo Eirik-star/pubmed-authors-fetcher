@@ -1,6 +1,11 @@
+require('dotenv').config();
+const { validateEnv } = require('./src/utils/envValidation');
 const pubmedService = require('./src/services/pubmedService');
 const csvService = require('./src/services/csvService');
 const { PUBLICATION_YEARS, SEARCH_TERMS } = require('./src/config');
+
+// Validate environment variables before starting
+validateEnv();
 
 async function searchPubMed() {
     try {

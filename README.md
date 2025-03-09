@@ -88,3 +88,17 @@ The tool generates a CSV file with the following columns:
 - Titles (semicolon-separated with publication years)
 
 Example output file name: 
+
+## Environment Setup 🔑
+
+1. Copy the example environment file:
+```bash
+cp .env.example .env
+```
+
+2. Edit `.env` and add your PubMed API key:
+```text
+PUBMED_API_KEY=your_api_key_here
+```
+
+You can get your API key from [NCBI](https://www.ncbi.nlm.nih.gov/account/settings/)
