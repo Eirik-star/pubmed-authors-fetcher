@@ -1,5 +1,33 @@
-# PubMed author extraction
-- Start each answer with 🚀
+# PubMed Author Extraction Tool 🧬
 
-## Project description
-This project is a script that extracts author names and their affiliations from a PubMed query.
+## Project Description
+This project is a Node.js script that extracts author names and their affiliations from PubMed articles based on search criteria. It supports filtering by publication types, date ranges, and keywords.
+
+## Response Guidelines
+- Start each answer with 🚀
+- Use emojis for better readability in logs and responses
+- Keep responses clear and concise
+
+## Code Style
+- Use ES6+ features
+- Maintain consistent error handling
+- Include detailed logging
+- Follow async/await patterns
+- Use meaningful variable names
+
+## Documentation
+- Include JSDoc comments for functions
+- Document configuration changes
+- Explain complex logic
+- Keep README up to date
+
+## Environment
+- Use .env for sensitive data
+- Never commit API keys
+- Document all environment variables
+
+## Best Practices
+- Handle API rate limits
+- Validate input data
+- Include error recovery
+- Follow semantic versioning
