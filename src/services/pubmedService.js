@@ -122,6 +122,15 @@ class PubMedService {
         return allArticles;
     }
 
+    validateTitle(title) {
+        if (!title) return false;
+        
+        const normalizedTitle = title.toLowerCase();
+        const keywords = SEARCH_TERMS.KEYWORDS.map(k => k.toLowerCase());
+        
+        return keywords.some(keyword => normalizedTitle.includes(keyword));
+    }
+
     validateArticleData(article, index) {
         if (!article.MedlineCitation?.Article?.ArticleTitle) {
             console.warn(`⚠️  Article #${index + 1} is missing title information`);
@@ -129,6 +138,14 @@ class PubMedService {
         }
         
         const title = article.MedlineCitation.Article.ArticleTitle;
+        const titleStr = typeof title === 'object' ? title._ || title.toString() : title;
+
+        // Check if title contains at least one keyword
+        if (!this.validateTitle(titleStr)) {
+            console.warn(`⚠️  Article #${index + 1} title does not contain any search keywords: "${titleStr}"`);
+            return false;
+        }
+        
         if (typeof title === 'object' && !title._) {
             console.warn(`⚠️  Article #${index + 1} has complex title structure:`, title);
         }
@@ -139,9 +156,11 @@ class PubMedService {
     extractAuthorInfo(articles) {
         const authorMap = new Map();
         let processedCount = 0;
+        let skippedCount = 0;
         
         articles.forEach((article, index) => {
             if (!this.validateArticleData(article, index)) {
+                skippedCount++;
                 return; // Skip invalid articles
             }
             processedCount++;
@@ -177,6 +196,12 @@ class PubMedService {
                 });
             }
         });
+        
+        // Add summary of filtered articles
+        console.log('\n📊 Article Processing Summary:');
+        console.log(`   ✅ Accepted articles: ${processedCount}`);
+        console.log(`   ❌ Filtered out: ${skippedCount}`);
+        console.log(`   📈 Acceptance rate: ${((processedCount / articles.length) * 100).toFixed(1)}%`);
         
         return authorMap;
     }
