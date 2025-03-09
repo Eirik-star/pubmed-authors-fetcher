@@ -1,0 +1,13 @@
+{
+  "name": "pubmed-author-search",
+  "version": "1.0.0",
+  "description": "Search PubMed for researchers and their organizations",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.2",
+    "xml2js": "^0.6.2"
+  }
+}

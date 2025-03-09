@@ -1,0 +1,5 @@
+# PubMed author extraction
+- Start each answer with 🚀
+
+## Project description
+This project is a script that extracts author names and their affiliations from a PubMed query.
