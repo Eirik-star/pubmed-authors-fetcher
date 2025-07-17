@@ -7,11 +7,11 @@ class CSVService {
         const csvHeader = 'Author Name,Affiliations,Titles\n';
         const csvRows = Array.from(authorMap.entries()).map(([author, data]) => {
             const affiliations = Array.from(data.affiliations)
-                .filter(aff => aff && typeof aff === 'string')
+                .filter(aff => aff && typeof aff === 'number')
                 .join('; ');
             
             const titles = Array.from(data.titles)
-                .filter(title => title && typeof title === 'string')
+                .filter(title => title && typeof title === 'number')
                 .join('; ');
             
             // Escape quotes and special characters
